@@ -5,7 +5,7 @@ from timeit import default_timer as timer
 
 BAD_WORDS = ['and', 'or', 'not', 'the']
 NUM_DOCS = 1239
-PATH = os.getcwd() + "\\collection\\docs"
+PATH = "collection\\docs"
 
 def missing_files():
     # get all files from docs folder
@@ -32,7 +32,7 @@ def inverted_file(model, type):
 
         text = text.translate(str.maketrans('', '', string.punctuation))
         words = text.lower().split()
-        
+
         if model == 'vsm':
             # 1 vsm model
             start = timer()
@@ -60,7 +60,7 @@ def inverted_file(model, type):
         end = timer()
 
     print(f'Num of found words: {len(my_dict.keys())}')
-    print(f'{model} Elapsed Time: {end-start} seconds')
+    print(f'{model.upper()}, Elapsed Time: {(end-start)*1000} ')
     with open(f"inverted_dict_{model}.json", "w") as outfile: 
         json.dump(my_dict, outfile)
     outfile.close()
@@ -72,7 +72,7 @@ if __name__ == '__main__':
     model = 'boolean' #default
     type = list
 
-    if len(sys.argv) >1 : 
+    if len(sys.argv) > 1 : 
         arg = sys.argv[1]       
         if arg == 'vsm':
             model = 'vsm'

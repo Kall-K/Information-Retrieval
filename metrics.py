@@ -1,9 +1,6 @@
 import os, json
 import boolean, vsm
 from timeit import default_timer as timer
-import matplotlib.pyplot as plt
-import numpy as np
-
 
 PATH = os.getcwd() + "\\collection\\docs"
 
@@ -18,7 +15,7 @@ def experiment(queries, num_r):
         docs = boolean.boolean_main(q)
         end = timer()
         boolean_res.append({
-            'docs': docs, #
+            'docs': docs,
             'time': end-start #sec
         })
         
@@ -33,7 +30,6 @@ def experiment(queries, num_r):
     return boolean_res, vsm_res
 
 def precision(result, relevant):
-#posa apo ta eggrafa pou anaktithikan einai sxetika me to erotima
     pr = []
     for res,rel in zip(result,relevant):
         pr.append(len([doc for doc in res['docs'] if int(doc) in rel])/len(res['docs']))
@@ -41,7 +37,6 @@ def precision(result, relevant):
     return pr
 
 def recall(result, relevant):
-#posa apo ta sxetika eggrafa anaktithikan sinolika
     rc = []
     for res,rel in zip(result,relevant):
         rc.append(len([doc for doc in res['docs'] if int(doc) in rel])/len(rel))
@@ -69,7 +64,6 @@ def metrics_main():
 
     boolean_res, vsm_res = experiment(queries, num_r)
 
-
     pr_boolean = precision(boolean_res,relevant_new)
     pr_vsm = precision(vsm_res, relevant_new)
 
@@ -77,18 +71,14 @@ def metrics_main():
     rc_vsm = recall(vsm_res, relevant_new)
     
     for i in range(len(queries)):
-        boolean_res[i].update({'precision': pr_boolean[i], 'recall': rc_boolean[i]})
-        vsm_res[i].update({'precision': pr_vsm[i], 'recall': rc_vsm[i]})
-
-    for b,s in zip(boolean_res, vsm_res):
-        b['docs'] = len(b['docs'])
-        s['docs'] = len(s['docs'])
+        boolean_res[i].update({'precision': pr_boolean[i], 'recall': rc_boolean[i], '#docs': len(boolean_res[i]['docs'])})
+        vsm_res[i].update({'precision': pr_vsm[i], 'recall': rc_vsm[i], '#docs': len(vsm_res[i]['docs'])})
 
     with open("Boolean_Results.json", "w") as outfile: 
         json.dump(boolean_res, outfile)
     with open("VSM_Results.json", "w") as outfile: 
         json.dump(boolean_res, outfile)
-        
+
     f = open("Metrics.txt", "w")    
     f.write('Boolean Model vs VSM Model \n')
     for i in range(len(queries)):
@@ -96,19 +86,9 @@ def metrics_main():
               time: {boolean_res[i]['time']}  {vsm_res[i]['time']} \n \
               precision: {boolean_res[i]['precision']}  {vsm_res[i]['precision']} \n \
               recall: {boolean_res[i]['recall']}  {vsm_res[i]['recall']} \n \
-              Num Docs: {boolean_res[i]['docs']}  {vsm_res[i]['docs']} \n ')
+              Num Docs: {boolean_res[i]['#docs']}  {vsm_res[i]['#docs']} \n \
+              5-top Docs: {boolean_res[i]['docs'][:5]}  {vsm_res[i]['docs'][:5]} \n')
     f.close()
-    # ir_model = ['boolean', 'vsm']
-    # plt.figure("Precision Results")
-    # x_axis = np.arange(len(ir_model))
-    # plt.bar(x_axis-0.2,precision(boolean_res,relevant_new),0.4,label = 'boolean model')
-    # plt.bar(x_axis+0.2,precision(vsm_res, relevant_new),0.4,label = 'vsm model')
-    # plt.xticks(x_axis,ir_model)
-    # plt.xlabel("Models")
-    # plt.ylabel("Precision")
-    # plt.legend()
-    # plt.savefig('Precision.png')
-    # plt.close()
 
 if __name__ == '__main__':
     metrics_main()

@@ -14,8 +14,7 @@ from collections import Counter
 import math as m
 import json
 
-PATH = os.getcwd() + "\\collection\\docs"
-DOCS =  tuple(os.listdir(PATH))
+DOCS =  tuple(os.listdir("collection\\docs"))
 NUM_DOCS = len(DOCS)
 
 
@@ -105,7 +104,7 @@ def similarity(doc_w, query_w):
 
 
 def vsm_main(query,save=False):
-    f = open(os.getcwd() + '\\inverted_dict_vsm.json')
+    f = open('inverted_dict_vsm.json')
     inverted_dict = json.load(f)
     f.close()
 
@@ -121,11 +120,12 @@ def vsm_main(query,save=False):
             sim = similarity(doc_w, query_w)
             sims[doc] = sim
 
-    sorted_data = sorted(sims.items(), key=lambda item: item[1], reverse=True)
-    print(len(sorted_data))
+    sorted_data = dict(sorted(sims.items(), key=lambda item: item[1], reverse=True))
+    sorted_data = filter(lambda kv: kv[1] != 0, sorted_data.items())
+    
     if save:
         with open('similarities.json', "w") as outfile:
-            json.dump(sorted_data, outfile)
+            json.dump(dict(sorted_data), outfile)
         outfile.close()
     
     return [sd[0] for sd in sorted_data]

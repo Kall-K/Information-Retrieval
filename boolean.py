@@ -8,18 +8,13 @@ use the following operators
 -or
 -not
 '''
-'''
-na koitaxo mhpos anti gia set na xrisimopoiiso dianisma. to dianisma tha einai osa kai ta keimena. 
-kathe lexi tha exei to diko ths dianisa me 1 se opoio doc yparxei kai oi praxeis tha ginontai bitwise.
-'''
 
-
-PATH1 = os.getcwd() + "\\inverted_dict_boolean.json"
+PATH1 = "inverted_dict_boolean.json"
 with open(PATH1, 'r') as f:
        inv_dict =  json.load(f)
 f.close()
 
-PATH2 = os.getcwd() + "\\collection\\docs"
+PATH2 = "collection\\docs"
 whole =  set(os.listdir(PATH2))
 DOCS =  tuple(os.listdir(PATH2))
 
@@ -64,17 +59,17 @@ def unwrapper(exp):
 
     return calc_expression(exp_f)
 
-def build_matrix(terms):
+# def build_matrix(terms):
 
-    boolean_matrix = defaultdict(list)
+#     boolean_matrix = defaultdict(list)
     
-    for t in terms:
-        if t in inv_dict.keys():
-            for d in DOCS:
-                if d in inv_dict[t]: boolean_matrix[d].append(1)
-                else: boolean_matrix[d].append(0)
+#     for t in terms:
+#         if t in inv_dict.keys():
+#             for d in DOCS:
+#                 if d in inv_dict[t]: boolean_matrix[d].append(1)
+#                 else: boolean_matrix[d].append(0)
 
-    return boolean_matrix
+#     return boolean_matrix
                 
 
 def boolean_matrix(exp):
@@ -97,8 +92,6 @@ def result(doc_matrix):
 
     return ranking
 
-    
-
 def boolean_main(query):
     query.lower()
     query = [q for q in query.split() if q in inv_dict.keys()]
@@ -106,7 +99,6 @@ def boolean_main(query):
     exp = exp.split()
     # res = unwrapper(exp)    
     res = result(boolean_matrix(query))
-    print(len(res))
     return list(res)
 
 def boolean_expression(expression):
@@ -122,7 +114,7 @@ def boolean_expression(expression):
     print(len(res), res)
 
 if __name__ == '__main__':
-    # expression = '((infection and patients) or effective)'    #input('give a logical query:')
+    # expression = '((infection and patients) or effective)'    #input('give a logical expression:')
     # boolean_expression(expression)
     query = 'How effective are inhalations of mucolytic agents in the treatment of CF patients'#input
     boolean_main(query)
