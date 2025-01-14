@@ -92,3 +92,7 @@ def metrics_main():
 
 if __name__ == '__main__':
     metrics_main()
+    print("Results have been generated. You can find them in the following files:")
+    print("- Metrics: Metrics.txt")
+    print("- Boolean Retrieved docs: Boolean_Results.json")
+    print("- VSM Retrieved docs: VSM_Results.json")
