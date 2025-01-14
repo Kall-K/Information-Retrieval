@@ -2,8 +2,6 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_ollama.llms import OllamaLLM
 import boolean, vsm
 import sys
-#'good morning, today its monday, would you like to go for a walk?'
-# q = 'How many documents are there?'
 
 def model_call(model, query):
     text = ''

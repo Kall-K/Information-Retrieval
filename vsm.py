@@ -49,14 +49,6 @@ def query_weights(query, inverted_dict):
         w_t = 0.5 + ((0.5 * (val / terms_f[max_term])) * m.log10(NUM_DOCS/ni))
         w.append(w_t)
    
-    # v2
-    # for term, val in inverted_dict.items():
-    #     if term in terms_f.keys():
-    #         ni = len(val['doc'])
-    #         w_t = 0.5 + ((0.5 * (terms_f[term] / terms_f[max_term])) * m.log10(NUM_DOCS/ni))
-    #         w.append(w_t)
-    #     else: 
-    #         w.append(0)
     return w, terms_f
 
 
@@ -77,17 +69,6 @@ def doc_weights(inverted_dict, doc, q_terms):
             w_t = (f / max_f['f']) * m.log10(NUM_DOCS/ni)
             w.append(w_t)
         else: w.append(0)
-    
-    # v2
-    # for _, val in inverted_dict.items():
-
-    #     if doc in val['doc']:
-    #         idx = val['doc'].index(doc)
-    #         f = val['f'][idx]
-    #         ni = len(val['doc'])
-    #         w_t = (f / max_f['f']) * m.log10(NUM_DOCS/ni)
-    #         w.append(w_t)
-    #     else: w.append(0)
 
     return w
 
@@ -98,7 +79,6 @@ def similarity(doc_w, query_w):
 
     s = [d*q for d, q in zip(doc_w, query_w)]
 
-    
     return sum(s) / (norm(doc_w) * norm(query_w))
 
 

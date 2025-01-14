@@ -59,21 +59,9 @@ def unwrapper(exp):
 
     return calc_expression(exp_f)
 
-# def build_matrix(terms):
-
-#     boolean_matrix = defaultdict(list)
-    
-#     for t in terms:
-#         if t in inv_dict.keys():
-#             for d in DOCS:
-#                 if d in inv_dict[t]: boolean_matrix[d].append(1)
-#                 else: boolean_matrix[d].append(0)
-
-#     return boolean_matrix
-                
-
 def boolean_matrix(exp):
     doc_matrix = defaultdict(list)
+
     for d in DOCS:
         for e in exp:
             if d in inv_dict[e]: doc_matrix[d].append(1)
@@ -83,6 +71,7 @@ def boolean_matrix(exp):
 
 def result(doc_matrix):
     ranking = {}
+
     for d, vec in doc_matrix.items():
         s = sum(vec)
         ranking[d] = s
@@ -97,24 +86,20 @@ def boolean_main(query):
     query = [q for q in query.split() if q in inv_dict.keys()]
     exp = ' or '.join(query)
     exp = exp.split()
-    # res = unwrapper(exp)    
     res = result(boolean_matrix(query))
+    
     return list(res)
 
 def boolean_expression(expression):
     exp = re.split(r'(\s+|\(|\))', expression)
     exp = [token for token in exp if token.strip()]
-
-    # chars = ['(', ')', 'and', 'or', 'not']
-    # terms = [t for t in exp if t not in chars]
-    # print(terms)
-    # build_matrix(terms)
-
     res = unwrapper(exp)
     print(len(res), res)
 
 if __name__ == '__main__':
-    # expression = '((infection and patients) or effective)'    #input('give a logical expression:')
+    # print('! Use parentheses on the expression for the appropriate execution of the expression.')
+    # expression = input('Give a logical expression:')
+    # expression = '(infection and patients) or effective'    
     # boolean_expression(expression)
     query = 'How effective are inhalations of mucolytic agents in the treatment of CF patients'#input
     boolean_main(query)
