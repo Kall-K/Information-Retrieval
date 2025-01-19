@@ -99,7 +99,6 @@ def boolean_expression(expression):
 if __name__ == '__main__':
     # print('! Use parentheses on the expression for the appropriate execution of the expression.')
     # expression = input('Give a logical expression:')
-    # expression = '(infection and patients) or effective'    
     # boolean_expression(expression)
     query = 'How effective are inhalations of mucolytic agents in the treatment of CF patients'#input
     boolean_main(query)
